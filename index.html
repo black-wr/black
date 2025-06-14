@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGU - Sahabat Guru</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            padding: 20px;
+            max-width: 800px;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .chat-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(to right, #4361ee, #3a0ca3);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #fff;
+            padding: 5px;
+        }
+        
+        .chat-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .chat-header .status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #4ade80;
+            border-radius: 50%;
+        }
+        
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f0f4ff;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            background: linear-gradient(to right, #4361ee, #3a0ca3);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .bot-message {
+            background: white;
+            color: #333;
+            align-self: flex-start;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .file-message {
+            background: #d1e7dd;
+            border: 1px solid #badbcc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+        
+        .file-message a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #0f5132;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .file-message a:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .chat-footer {
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+            background: white;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            outline: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .chat-input:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .send-button {
+            background: linear-gradient(to right, #4361ee, #3a0ca3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .upload-button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .upload-button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        
+        .features {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            max-width: 700px;
+        }
+        
+        .features h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #3a0ca3;
+            font-size: 2.2rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .feature-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.2);
+            border-color: #4361ee;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #4361ee;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #3a0ca3;
+        }
+        
+        .feature-card p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .info {
+            margin-top: 40px;
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 20px;
+        }
+        
+        .info h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .info p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .chat-container {
+                height: 500px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-robot"></i> SAGU - Sahabat Guru</h1>
+        <p>Asisten AI cerdas yang didedikasikan untuk membantu para guru dalam aktivitas pengajaran sehari-hari. Unggah materi ajar, ajukan pertanyaan, dan dapatkan bantuan instan!</p>
+    </div>
+    
+    <div class="container">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="avatar">SAGU</div>
+                <div>
+                    <h2>Sahabat Guru</h2>
+                    <div class="status">
+                        <div class="status-dot"></div>
+                        <span>Online - Siap membantu</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-body" id="chatBody">
+                <div class="message bot-message">
+                    Halo! Saya SAGU, Sahabat Guru. 👋<br>
+                    Saya di sini untuk membantu Anda dalam kegiatan mengajar. Silakan ajukan pertanyaan, minta bantuan membuat RPP, atau unggah dokumen pengajaran Anda.
+                </div>
+                <div class="message bot-message">
+                    Contoh pertanyaan yang bisa Anda tanyakan:<br>
+                    • "Bantu saya membuat RPP untuk kelas 5 SD tema Ekosistem"<br>
+                    • "Buatkan soal matematika kelas 7 tentang aljabar"<br>
+                    • "Saya butuh bahan ajar tentang fotosintesis"
+                </div>
+            </div>
+            
+            <div class="chat-footer">
+                <input type="file" id="fileInput" class="file-input" accept=".pdf,.docx,.txt,.xlsx">
+                <button class="upload-button" id="uploadButton" title="Unggah dokumen">
+                    <i class="fas fa-file-upload"></i>
+                </button>
+                <input type="text" class="chat-input" id="chatInput" placeholder="Ketik pertanyaan Anda...">
+                <button class="send-button" id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2>Fitur Unggulan SAGU</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Pemrosesan Dokumen Cerdas</h3>
+                    <p>SAGU mampu memahami materi dari dokumen yang Anda unggah (PDF, Word, Excel) dan menggunakannya sebagai referensi untuk menjawab pertanyaan.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-download"></i>
+                    </div>
+                    <h3>Generasi File Otomatis</h3>
+                    <p>Butuh RPP, soal ujian, atau bahan ajar? SAGU bisa membuatkannya untuk Anda dalam format Word atau PDF hanya dengan permintaan sederhana.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Pembelajaran Terus Menerus</h3>
+                    <p>Setiap interaksi dengan guru membuat SAGU semakin pintar. Sistem terus memperbarui pengetahuan berdasarkan materi dan pertanyaan baru.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Database Pengetahuan Pendidikan</h3>
+                    <p>Akses ribuan materi kurikulum, metode pengajaran, dan referensi pendidikan yang terus diperbarui.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info">
+        <h2>Bagaimana SAGU Bekerja?</h2>
+        <p>Setelah Anda mengunggah dokumen pengajaran ke sistem, SAGU akan menganalisis dan memahaminya menggunakan teknologi AI canggih. Ketika Anda mengajukan pertanyaan, SAGU menggabungkan pengetahuan dari dokumen Anda dengan database pendidikan yang luas untuk memberikan jawaban terbaik.</p>
+        <p>Untuk permintaan khusus seperti pembuatan RPP atau soal ujian, SAGU akan menghasilkan dokumen siap pakai yang bisa Anda download langsung.</p>
+        <p>Setiap interaksi disimpan dan dipelajari untuk meningkatkan kualitas layanan di masa depan.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatBody = document.getElementById('chatBody');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const uploadButton = document.getElementById('uploadButton');
+            const fileInput = document.getElementById('fileInput');
+            
+            // Contoh respons AI
+            const aiResponses = [
+                "Tentu, berikut RPP untuk kelas 5 SD tema Ekosistem yang Anda minta...",
+                "Berikut beberapa soal matematika tentang aljabar untuk kelas 7...",
+                "Saya menemukan beberapa bahan ajar tentang fotosintesis dalam database...",
+                "Berdasarkan dokumen yang Anda unggah, berikut analisisnya...",
+                "Saya telah membuat bahan ajar yang Anda minta. Silakan download file di bawah...",
+                "Berikut beberapa metode pengajaran interaktif yang bisa Anda terapkan..."
+            ];
+            
+            // Contoh nama file
+            const fileNames = [
+                "RPP_Kelas5_Ekosistem.docx",
+                "Soal_Matematika_Aljabar_Kelas7.docx",
+                "Bahan_Ajar_Fotosintesis.pdf",
+                "Analisis_Hasil_Ujian_Semester.xlsx",
+                "Strategi_Pengelolaan_Kelas.docx",
+                "Template_RPP_Tematik.docx"
+            ];
+            
+            // Fungsi untuk menambahkan pesan ke chat
+            function addMessage(text, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+                
+                messageDiv.innerHTML = text;
+                chatBody.appendChild(messageDiv);
+                
+                // Animasi scroll ke bawah
+                chatBody.scrollTop = chatBody.scrollHeight;
+                
+                // Jika pesan dari bot, tambahkan efek pengetikan
+                if (!isUser) {
+                    messageDiv.style.opacity = '0';
+                    messageDiv.style.maxHeight = '0';
+                    
+                    setTimeout(() => {
+                        messageDiv.style.transition = 'opacity 0.3s, max-height 0.5s';
+                        messageDiv.style.opacity = '1';
+                        messageDiv.style.maxHeight = '500px';
+                    }, 100);
+                }
+            }
+            
+            // Fungsi untuk menambahkan pesan dengan file
+            function addFileMessage(text, fileName) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add('bot-message');
+                
+                messageDiv.innerHTML = `
+                    ${text}
+                    <div class="file-message">
+                        <p>Dokumen telah dibuat:</p>
+                        <a href="#" download="${fileName}">
+                            <i class="fas fa-file-download"></i> ${fileName}
+                        </a>
+                    </div>
+                `;
+                
+                chatBody.appendChild(messageDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+            
+            // Fungsi untuk menangani pengiriman pesan
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    chatInput.value = '';
+                    
+                    // Simulasi AI sedang mengetik
+                    setTimeout(() => {
+                        const typingIndicator = document.createElement('div');
+                        typingIndicator.classList.add('message', 'bot-message');
+                        typingIndicator.innerHTML = '<i class="fas fa-circle"></i> <i class="fas fa-circle"></i> <i class="fas fa-circle"></i>';
+                        chatBody.appendChild(typingIndicator);
+                        chatBody.scrollTop = chatBody.scrollHeight;
+                        
+                        // Simulasi waktu pemrosesan AI
+                        setTimeout(() => {
+                            chatBody.removeChild(typingIndicator);
+                            
+                            // Pilih respons acak
+                            const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+                            
+                            // 30% kemungkinan respons mengandung file
+                            if (Math.random() < 0.3) {
+                                const randomFile = fileNames[Math.floor(Math.random() * fileNames.length)];
+                                addFileMessage(randomResponse, randomFile);
+                            } else {
+                                addMessage(randomResponse);
+                            }
+                        }, 1500);
+                    }, 500);
+                }
+            }
+            
+            // Event listener untuk tombol kirim
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Event listener untuk tombol Enter
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Event listener untuk tombol unggah
+            uploadButton.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // Event listener untuk pilihan file
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const fileName = this.files[0].name;
+                    addMessage(`Dokumen <strong>${fileName}</strong> berhasil diunggah!`, true);
+                    
+                    // Simulasi AI sedang memproses
+                    setTimeout(() => {
+                        const typingIndicator = document.createElement('div');
+                        typingIndicator.classList.add('message', 'bot-message');
+                        typingIndicator.innerHTML = '<i class="fas fa-circle"></i> <i class="fas fa-circle"></i> <i class="fas fa-circle"></i>';
+                        chatBody.appendChild(typingIndicator);
+                        chatBody.scrollTop = chatBody.scrollHeight;
+                        
+                        setTimeout(() => {
+                            chatBody.removeChild(typingIndicator);
+                            addMessage(`Terima kasih! Saya telah memproses dokumen <strong>${fileName}</strong>. Sekarang saya bisa menggunakan informasi di dalamnya untuk membantu Anda.`);
+                        }, 2000);
+                    }, 500);
+                }
+            });
+            
+            // Tambahkan beberapa contoh percakapan
+            setTimeout(() => {
+                addMessage("Bantu saya membuat RPP untuk kelas 5 SD tema Ekosistem", true);
+                
+                setTimeout(() => {
+                    addFileMessage("Tentu, berikut RPP untuk kelas 5 SD tema Ekosistem yang Anda minta. Saya telah menyesuaikan dengan kurikulum terbaru dan menambahkan aktivitas interaktif.", "RPP_Kelas5_Ekosistem.docx");
+                }, 1500);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
